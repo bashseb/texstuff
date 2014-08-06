@@ -1,27 +1,27 @@
-diff --git a/commands.c b/commands.c                                                                                                                                                                                                           
-index 00326ba..6c34880 100644                                                                                                                                                                                                                  
---- a/commands.c                                                                                                                                                                                                                               
-+++ b/commands.c                                                                                                                                                                                                                               
-@@ -524,6 +524,10 @@ cmd_exec(girara_session_t* session, girara_list_t* argument_list)                                                                                                                                                         
-                                                                                                                                                                                                                                               
-     GIRARA_LIST_FOREACH(argument_list, char*, iter, value)                                                                                                                                                                                    
-     char* r = girara_replace_substring(value, "$FILE", path);                                                                                                                                                                                 
-+    if ( g_strcmp0(r, value) == 0 ) {                                                                                                                                                                                                         
-+      /* also test for vim-like replacement string */                                                                                                                                                                                         
-+      r = girara_replace_substring(r, "%", path);                                                                                                                                                                                             
-+    }                                                                                                                                                                                                                                         
-     if (r != NULL) {                                                                                                                                                                                                                          
-       girara_list_iterator_set(iter, r);                                                                                                                                                                                                      
-     }                                                                                                                                                                                                                                         
-diff --git a/config.c b/config.c                                                                                                                                                                                                               
-index 7735d76..12aad9c 100644                                                                                                                                                                                                                  
---- a/config.c                                                                                                                                                                                                                                 
-+++ b/config.c                                                                                                                                                                                                                                 
-@@ -418,6 +418,7 @@ config_load_default(zathura_t* zathura)                                                                                                                                                                                    
-   girara_inputbar_command_add(gsession, "close",      NULL,   cmd_close,           NULL,         _("Close current file"));                                                                                                                    
-   girara_inputbar_command_add(gsession, "info",       NULL,   cmd_info,            NULL,         _("Show file information"));                                                                                                                 
-   girara_inputbar_command_add(gsession, "exec",       NULL,   cmd_exec,            NULL,         _("Execute a command"));                                                                                                                     
-+  girara_inputbar_command_add(gsession, "!",          NULL,   cmd_exec,            NULL,         _("Execute a command")); /* like vim */                                                                                                      
-   girara_inputbar_command_add(gsession, "help",       NULL,   cmd_help,            NULL,         _("Show help"));                                                                                                                             
-   girara_inputbar_command_add(gsession, "open",       "o",    cmd_open,            cc_open,      _("Open document"));                                                                                                                         
-   girara_inputbar_command_add(gsession, "quit",       "q",    cmd_quit,            NULL,         _("Close zathura"));                                                                                                                         
+diff --git a/commands.c b/commands.c
+index 00326ba..6c34880 100644
+--- a/commands.c
++++ b/commands.c
+@@ -524,6 +524,10 @@ cmd_exec(girara_session_t* session, girara_list_t* argument_list)
+     GIRARA_LIST_FOREACH(argument_list, char*, iter, value)
+     char* r = girara_replace_substring(value, "$FILE", path);
++    if ( g_strcmp0(r, value) == 0 ) {
++      /* also test for vim-like replacement string */
++      r = girara_replace_substring(r, "%", path);
++    }
+     if (r != NULL) {
+       girara_list_iterator_set(iter, r);
+     }
+diff --git a/config.c b/config.c
+index 7735d76..12aad9c 100644
+--- a/config.c
++++ b/config.c
+@@ -418,6 +418,7 @@ config_load_default(zathura_t* zathura)
+   girara_inputbar_command_add(gsession, "close",      NULL,   cmd_close,           NULL,         _("Close current file"));
+   girara_inputbar_command_add(gsession, "info",       NULL,   cmd_info,            NULL,         _("Show file information"));
+   girara_inputbar_command_add(gsession, "exec",       NULL,   cmd_exec,            NULL,         _("Execute a command"));
++  girara_inputbar_command_add(gsession, "!",          NULL,   cmd_exec,            NULL,         _("Execute a command")); /* like vim */
+   girara_inputbar_command_add(gsession, "help",       NULL,   cmd_help,            NULL,         _("Show help"));
+   girara_inputbar_command_add(gsession, "open",       "o",    cmd_open,            cc_open,      _("Open document"));
+   girara_inputbar_command_add(gsession, "quit",       "q",    cmd_quit,            NULL,         _("Close zathura"));
+
