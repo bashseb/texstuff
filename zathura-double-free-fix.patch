@@ -1,0 +1,13 @@
+diff --git a/document.c b/document.c
+index 4d4c76a..977f84b 100644
+--- a/document.c
++++ b/document.c
+@@ -177,6 +177,8 @@ error_free:
+ 
+   if (document != NULL) {
+     zathura_document_free(document);
++    // but document is corrupt:
++    document = NULL;
+   }
+ 
+   g_free(document);
